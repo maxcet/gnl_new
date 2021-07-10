@@ -1,111 +1,93 @@
 #include "get_next_line.h"
-#include <fcntl.h>
 
-size_t	ft_strlen(const char *s)
+char 	*get_next_line(int fd)
 {
-	size_t	len;
+	static char	*tail;
+	char		*buffer;
+	char		*line;
+	int			rd;
 
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
-}
-
-size_t	ft_strlen_n(const char *s)
-{
-	size_t	len;
-
-	len = 0;
-	while (s[len] != '\n')
-		len++;
-	return (len);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	char	*ptr;
-	char	sym;
-
-	ptr = (char *) s;
-	sym = (char) c;
-	while (*ptr && !(*ptr == sym))
-		ptr++;
-	if (*ptr == sym)
-		return (ptr);
-	else
+	line = NULL;
+	rd = 1;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (buffer == NULL)
+		return (NULL);
+	while (rd != 0 && ft_strchr(tail, '\n') == NULL)
+	{
+		rd = read(fd, buffer, BUFFER_SIZE);
+		if (rd < 0)
+			return (NULL);
+		buffer[rd] = '\0';
+		tail = ft_strjoin(tail, buffer);
+	}
+	if (rd == 0)
+		return(NULL);
+	line = ft_get_line(tail);
+	ft_get_tail(&tail, line);
+	return (line);
 }
 
 char	*ft_get_line(char *tail)
 {
-	char *line;
+	char	*ptr;
+	char	*line;
 
-	if (tail == NULL)
-		return (NULL);
-	line = (char *)malloc(ft_strlen_n(tail) + 1);
-	if (line == NULL)
-		return (NULL);
-	ft_strlcpy(line, tail, ft_strlen_n(tail) + 1);
-	if (ft_strlen(tail) == ft_strlen_n(tail))
-		{	
-			*tail = 0;
-			return(line);
-		}
-	ft_strlcpy(tail, tail + ft_strlen_n(tail) + 1, ft_strlen(tail) + 1);
-	return (line);
-	
-}
-
-char		*get_next_line(int fd)
-{
-	static char 	*tail;
-	char			*buffer;
-	char			*line;
-	int				reader;
-	
-	write(1, "tut\n", 4);
-	if (fd < 0 || BUFFER_SIZE < 0)
-		return (NULL);
-	write(1, "tut2\n", 5);
-	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (!buffer)
-		return(NULL);
-	reader = 1;
-	write(1, "tut3\n", 5);
-	while (reader != 0 || ft_strchr(tail, '\n') == NULL)
-		{
-			reader = read(fd, buffer, BUFFER_SIZE);
-			if (reader == -1)
-			{
-				free(buffer);
-				return(NULL);
-			}
-			write(1, "tut4\n", 5);
-			buffer[reader] = '\0';
-			write(1, "tut77\n", 10);
-			tail = ft_strjoin(tail, buffer);
-			write(1, "tut8\n", 10);
-			free(buffer); 
-			if (tail == NULL)
-				return (NULL);
-		}
-	write(1, "tut5", 4);
-	line = ft_get_line(tail);
-	write(1, "tut6", 4);
-	if (line == NULL)
-		return (NULL);
+	ptr = ft_strchr(tail, '\n');
+	line = ft_substr(tail, 0, ptr - tail);
+	line = ft_strjoin(line, (const char *)"\n");
 	return(line);
 }
 
-int main(void)
+char	*ft_strdup(const char *s1)
 {
-	char *line;
-	int fd;
-	int check; 
+	int		len;
+	char	*str;
 
-	check = 1;
-	fd = open ("text.txt", O_RDONLY);
-	line = get_next_line(fd);
-	printf("%s\n", line);
+	len = ft_strlen(s1);
+	str = (char *)malloc(len + 1);
+	if (str == 0)
+		return (0);
+	len = 0;
+	while (s1[len] != 0)
+	{
+		str[len] = s1[len];
+		len++;
+	}
+	str[len] = '\0';
+	return (str);
+}
 
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	index;
+	char	*str;
+
+	if (s == 0 || start + len > ft_strlen(s))
+		return (NULL);
+	str = (char *)malloc(sizeof(char) * len + 1);
+	if (str == NULL)
+		return (NULL);
+	index = 0;
+	while (index < len)
+	{
+		str[index] = s[start];
+		index++;
+		start++;
+	}
+	str[index] = '\0';
+	return (str);
+}
+
+int		ft_get_tail(char **tail, char *line)
+{
+	char	*temp;
+
+	temp = ft_strdup(*tail + (ft_strlen(line)));
+	free(*tail);
+	*tail = temp;
+	if (*tail == NULL)
+		return (0);
+	return (1);
 }
