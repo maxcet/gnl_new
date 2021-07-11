@@ -31,18 +31,18 @@ size_t	ft_strlen(const char *s)
 
 char	*ft_strcpy(char *dest, char const *src)
 {
-	char	*temp;
+	char	*temprary_str;
 
 	if (src == NULL)
 		return (NULL);
-	temp = dest;
+	temprary_str = dest;
 	while (*src != 0)
 	{
-		*temp = *src;
-		temp++;
+		*temprary_str = *src;
+		temprary_str++;
 		src++;
 	}
-	*temp = 0;
+	*temprary_str = 0;
 	return (dest);
 }
 

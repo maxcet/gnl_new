@@ -2,40 +2,51 @@
 
 char 	*get_next_line(int fd)
 {
-	static char	*tail;
+	static char	*save_line;
 	char		*buffer;
 	char		*line;
 	int			rd;
 
 	rd = 1;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (buffer == NULL)
 		return (NULL);
-	while (rd != '\0' && ft_strchr(tail, '\n') == NULL)
+	while (rd != 0 && ft_strchr(save_line, '\n') == NULL)
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
 		if (rd < 0)
 			return (NULL);
-		buffer[rd] = '\0';
-		tail = ft_strjoin(tail, buffer);
+		buffer[rd] = 0;
+		save_line = ft_strjoin(save_line, buffer);
 	}
 	free(buffer);
-	if (rd == 0)
-		return(NULL);
-	line = ft_get_line(tail);
-	ft_get_tail(&tail, line);
-	return (line);
+	if (save_line != NULL)
+	{
+		line = ft_get_line(save_line);
+		ft_get_tail(&save_line, line);
+		return (line);
+	}
 }
 
-char	*ft_get_line(char *tail)
+char	*ft_get_line(char *save_line)
 {
 	char	*ptr;
 	char	*line;
+	static 	int checker;
 
-	ptr = ft_strchr(tail, '\n');
-	line = ft_substr(tail, 0, (ptr - tail) + 1);
+
+	if (checker == 1)
+		return (NULL);
+	ptr = ft_strchr(save_line, '\n');
+	if (ptr == NULL)
+	{	
+		line = ft_strdup(save_line);	
+		checker = 1;
+		return(line);
+	}
+	line = ft_substr(save_line, 0, (ptr - save_line) + 1); 
 	return(line);
 }
 
@@ -79,14 +90,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-int		ft_get_tail(char **tail, char *line)
+int		ft_get_tail(char **save_line, char *line)
 {
-	char	*temp;
+	char	*temprary_str;
 
-	temp = ft_strdup(*tail + (ft_strlen(line)));
-	free(*tail);
-	*tail = temp;
-	if (*tail == NULL)
+	temprary_str = ft_strdup(*save_line + (ft_strlen(line)));
+	free(*save_line);
+	*save_line = temprary_str;
+	if (*save_line == NULL)
 		return (0);
 	return (1);
 }
