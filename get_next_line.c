@@ -7,14 +7,13 @@ char 	*get_next_line(int fd)
 	char		*line;
 	int			rd;
 
-	line = NULL;
 	rd = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (buffer == NULL)
 		return (NULL);
-	while (rd != 0 && ft_strchr(tail, '\n') == NULL)
+	while (rd != '\0' && ft_strchr(tail, '\n') == NULL)
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
 		if (rd < 0)
@@ -22,6 +21,7 @@ char 	*get_next_line(int fd)
 		buffer[rd] = '\0';
 		tail = ft_strjoin(tail, buffer);
 	}
+	free(buffer);
 	if (rd == 0)
 		return(NULL);
 	line = ft_get_line(tail);
@@ -35,8 +35,7 @@ char	*ft_get_line(char *tail)
 	char	*line;
 
 	ptr = ft_strchr(tail, '\n');
-	line = ft_substr(tail, 0, ptr - tail);
-	line = ft_strjoin(line, (const char *)"\n");
+	line = ft_substr(tail, 0, (ptr - tail) + 1);
 	return(line);
 }
 
