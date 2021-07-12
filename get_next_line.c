@@ -16,8 +16,6 @@ char 	*get_next_line(int fd)
 	while (rd != 0 && ft_strchr(save_line, '\n') == NULL)
 	{
 		rd = read(fd, buffer, BUFFER_SIZE);
-		if (rd < 0)
-			return (NULL);
 		buffer[rd] = 0;
 		save_line = ft_strjoin(save_line, buffer);
 	}
