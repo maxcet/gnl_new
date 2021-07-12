@@ -22,28 +22,28 @@ char 	*get_next_line(int fd)
 	free(buffer);
 	line = ft_get_line(save_line);
 	ft_get_tail(&save_line, line);
-	return(line);
+	return (line);
 }
 
 char	*ft_get_line(char *save_line)
 {
-	char	*ptr;
-	char	*line;
-	static int checker;
+	char		*ptr;
+	char		*line;
+	static int	checker;
 
 	if (checker == 1)
-		return(NULL);
+		return (NULL);
 	ptr = ft_strchr(save_line, '\n');
 	if (ptr == NULL && save_line[0] != 0)
-		{
-			line =  ft_strdup(save_line);
-			checker = 1;
-		}
+	{
+		line = ft_strdup(save_line);
+		checker = 1;
+	}
 	else if (ptr != NULL)
 		line = ft_substr(save_line, 0, (ptr - save_line) + 1);
 	else
 		return (NULL);
-	return(line);
+	return (line);
 }
 
 char	*ft_strdup(const char *s1)
@@ -86,7 +86,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-int		ft_get_tail(char **save_line, char *line)
+int	ft_get_tail(char **save_line, char *line)
 {
 	char	*temprary_str;
 
