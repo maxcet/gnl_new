@@ -6,25 +6,30 @@ int main()
     char *line;
 
 
-    fd = open ("text.txt", O_RDONLY);
-//line = get_next_line(fd);
-//printf("%s", line);
-//free(line);
-//line = get_next_line(fd);
-//printf("%s", line);
-//free(line);
-//line = get_next_line(fd);
-//printf("%s", line);	free(line);
+    fd = open ("file", O_RDONLY);
+
  while((line = get_next_line(fd)) != NULL)
 {
     printf("%s", line);
     free(line);
 }
 //printf("%s\n", "Стандартный ввод:");
-//hile((line = get_next_line(0)) != NULL)
+//while((line = get_next_line(0)) != NULL)
 //{
 //	printf("%s", line);
 //	free(line);
 //}
     return (0);
 }
+
+//int main()
+//{
+//	char *line;
+//	line = 0;
+//	while ((line = get_next_line(0)) != NULL)
+//	{
+//		write(1, line, ft_strlen(line));
+//		free(line);
+//		line = 0;
+//	}
+//}

@@ -15,12 +15,11 @@
 
 char	*get_next_line(int fd);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strcpy(char *dest, char const *src);
-char	*ft_strcat(char *dest, const char *src);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_get_line(char *tail);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_get_free(char **trash);
 
 int		ft_get_tail(char **tail, char *line);
 
