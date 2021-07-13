@@ -58,5 +58,6 @@ char	*ft_strjoin(const char *s1, const char *s2)
 char	*ft_get_free(char **trash)
 {
 	free(*trash);
+	*trash = NULL;
 	return (NULL);
 }

@@ -10,7 +10,7 @@
 # include <string.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
+#  define BUFFER_SIZE 10
 # endif
 
 char	*get_next_line(int fd);
@@ -21,7 +21,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_get_free(char **trash);
 
-int		ft_get_tail(char **tail, char *line);
+int		ft_get_saveline(char **save_line, char *line);
 
 size_t	ft_strlen(const char *s);
 
